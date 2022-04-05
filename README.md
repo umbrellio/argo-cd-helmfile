@@ -48,7 +48,7 @@ Consider these implications for your environment and act appropriately.
     image: alpine:3.8
     command: [sh, -c]
     args:
-      - wget -qO /custom-tools/argo-cd-helmfile.sh https://raw.githubusercontent.com/travisghansen/argo-cd-helmfile/master/src/argo-cd-helmfile.sh &&
+      - wget -qO /custom-tools/argo-cd-helmfile.sh https://raw.githubusercontent.com/umbrellio/argo-cd-helmfile/master/src/argo-cd-helmfile.sh &&
         chmod +x /custom-tools/argo-cd-helmfile.sh &&
         wget -qO /custom-tools/helmfile https://github.com/roboll/helmfile/releases/download/v0.138.7/helmfile_linux_amd64 &&
         chmod +x /custom-tools/helmfile
@@ -84,13 +84,14 @@ optional):
   operation `helmfile template --help`
 - `HELMFILE_INIT_SCRIPT_FILE` - path to script to execute during init phase
 - `HELMFILE_HELMFILE` - a complete `helmfile.yaml` content
+- `HELM_CHARTS_FOR_DEPENDENCIES_UPDATE` - charts paths
 - `HELMFILE_HELMFILE_STRATEGY` - one of `REPLACE` or `INCLUDE`
-  - `REPLACE` - the default option, only the content of `HELMFILE_HELMFILE` is
-    rendered, if any valid files exist in the repo they are ignored
-  - `INCLUDE` - any valid files in the repo **AND** the content of
-    `HELMFILE_HELMFILE` are rendered, precedence is given to
-    `HELMFILE_HELMFILE` should the same release name be declared in multiple
-    files
+    - `REPLACE` - the default option, only the content of `HELMFILE_HELMFILE` is
+      rendered, if any valid files exist in the repo they are ignored
+    - `INCLUDE` - any valid files in the repo **AND** the content of
+      `HELMFILE_HELMFILE` are rendered, precedence is given to
+      `HELMFILE_HELMFILE` should the same release name be declared in multiple
+      files
 
 Of the above `ENV` variables, the following do variable expansion on the value:
 

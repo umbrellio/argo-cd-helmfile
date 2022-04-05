@@ -242,7 +242,7 @@ case $phase in
 
       for chart in "${charts[@]}"
       do
-          ${helm} dependency update $chart
+          ${helm} dependency build $chart
       done
     fi
 

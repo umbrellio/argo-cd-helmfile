@@ -238,12 +238,16 @@ case $phase in
     fi
 
     if [[ "${HELM_CHARTS_FOR_DEPENDENCIES_UPDATE}" ]]; then
+      ${helm} repo add ${ARGOCD_APP_SOURCE_TARGET_REVISION} https://gitlab.task4work.info/api/v4/projects/298/packages/helm/${ARGOCD_APP_SOURCE_TARGET_REVISION}
+
       IFS=',' read -ra charts <<< "$HELM_CHARTS_FOR_DEPENDENCIES_UPDATE"
 
       for chart in "${charts[@]}"
       do
           ${helm} dependency build $chart
       done
+
+      ${helm} repo remove ${ARGOCD_APP_SOURCE_TARGET_REVISION}
     fi
 
     ${helmfile} \

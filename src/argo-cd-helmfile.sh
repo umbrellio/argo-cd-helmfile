@@ -10,7 +10,6 @@
 # HELMFILE_HELMFILE_STRATEGY - REPLACE or INCLUDE
 # HELMFILE_INIT_SCRIPT_FILE - path to script to execute during the init phase
 # HELM_DATA_HOME - perform variable expansion
-# HELM_CHARTS_FOR_DEPENDENCIES_UPDATE - charts paths
 
 # NOTE: only 1 -f value/file/dir is used by helmfile, while you can specific -f multiple times
 # only the last one matters and all previous -f arguments are irrelevant
@@ -237,18 +236,9 @@ case $phase in
       INTERNAL_HELM_TEMPLATE_OPTIONS="${INTERNAL_HELM_TEMPLATE_OPTIONS} ${INTERNAL_HELM_API_VERSIONS}"
     fi
 
-    if [[ "${HELM_CHARTS_FOR_DEPENDENCIES_UPDATE}" ]]; then
-      IFS=',' read -ra charts <<< "$HELM_CHARTS_FOR_DEPENDENCIES_UPDATE"
-
-      for chart in "${charts[@]}"
-      do
-          ${helm} dependency build $chart
-      done
-    fi
-
     ${helmfile} \
       template \
-      --skip-deps ${INTERNAL_HELMFILE_TEMPLATE_OPTIONS} \
+      ${INTERNAL_HELMFILE_TEMPLATE_OPTIONS} \
       --args "${INTERNAL_HELM_TEMPLATE_OPTIONS} ${HELM_TEMPLATE_OPTIONS}" \
       ${HELMFILE_TEMPLATE_OPTIONS}
     ;;

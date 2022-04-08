@@ -84,7 +84,6 @@ optional):
   operation `helmfile template --help`
 - `HELMFILE_INIT_SCRIPT_FILE` - path to script to execute during init phase
 - `HELMFILE_HELMFILE` - a complete `helmfile.yaml` content
-- `HELM_CHARTS_FOR_DEPENDENCIES_UPDATE` - charts paths
 - `HELMFILE_HELMFILE_STRATEGY` - one of `REPLACE` or `INCLUDE`
     - `REPLACE` - the default option, only the content of `HELMFILE_HELMFILE` is
       rendered, if any valid files exist in the repo they are ignored

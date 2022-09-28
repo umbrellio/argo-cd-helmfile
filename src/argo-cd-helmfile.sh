@@ -227,6 +227,7 @@ case $phase in
 
   "generate")
     echoerr "starting generate"
+    ${helmfile} repos
 
     INTERNAL_HELMFILE_TEMPLATE_OPTIONS=
     INTERNAL_HELM_TEMPLATE_OPTIONS=

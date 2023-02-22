@@ -170,8 +170,10 @@ case $phase in
   "init")
     echoerr "starting init"
 
+    helmfileLocation=${HELMFILE_LOCATION:-"helmfile.yaml"}
+
     # download helmfile and values from remote repo
-    if [ ! -e "$HELMFILE_LOCATION" ]; then
+    if [ ! -e "$helmfileLocation" ]; then
       curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN_HELM_CHARTS" "$PROJECT_DEPLOY_DIR_URL" --output "app-deploy.tar"
       mkdir "app-deploy-tmp"
       tar -xf "./app-deploy.tar" -C "./app-deploy-tmp"

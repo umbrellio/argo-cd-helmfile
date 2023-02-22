@@ -169,7 +169,7 @@ case $phase in
 
     # download helmfile and values from remote repo
     if [ ! -e "helmfile.yaml" ]; then
-      curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN_HELM_CHARTS" "https://gitlab.task4work.info/api/v4/projects/298/repository/archive?sha=$HELM_CHARTS_BRANCH&path=projects/$BASE_APP_NAME" --output "app-deploy.tar"
+      curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN_HELM_CHARTS" "$PROJECT_DEPLOY_DIR_URL" --output "app-deploy.tar"
       mkdir "app-deploy-tmp"
       tar -xf "./app-deploy.tar" -C "./app-deploy-tmp"
       cp -r "$(find ./app-deploy-tmp -name "helmfile.yaml" | sed 's/helmfile.yaml/./g')" .

@@ -167,10 +167,12 @@ case $phase in
   "init")
     echoerr "starting init"
 
+    echo "DEBUG!! $PROJECT_DEPLOY_DIR_URL"
+
     # download helmfile and values from remote repo
     if [ ! -e "helmfile.yaml" ]; then
+      echo "DEBUG!! INSIDE"
       curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN_HELM_CHARTS" "$PROJECT_DEPLOY_DIR_URL" --output "app-deploy.tar"
-      echo "DEBUG!! $PROJECT_DEPLOY_DIR_URL"
       mkdir "app-deploy-tmp"
       tar -xf "./app-deploy.tar" -C "./app-deploy-tmp"
       cp -r "$(find ./app-deploy-tmp -name "helmfile.yaml" | sed 's/helmfile.yaml/./g')" .

@@ -167,12 +167,14 @@ case $phase in
   "init")
     echoerr "starting init"
 
-    projectDeployDirName=$ARGOCD_APP_NAME-deploy
-    curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN_HELM_CHARTS" "$PROJECT_DEPLOY_DIR_URL" --output "$projectDeployDirName.tar"
-    mkdir "$projectDeployDirName-tmp"
-    tar -xf "./$projectDeployDirName.tar" -C "./$projectDeployDirName-tmp"
-    cp -r "$projectDeployDirName-tmp/$(ls ./$projectDeployDirName | head -1)/projects/$ARGOCD_APP_NAME" "./$projectDeployDirName"
-    rm -rf "$projectDeployDirName-tmp"
+    # download helmfile and values from remote repo
+    if [ ! -e "helmfile.yaml" ]; then
+      curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN_HELM_CHARTS" "$PROJECT_DEPLOY_DIR_URL" --output "app-deploy.tar"
+      mkdir "app-deploy-tmp"
+      tar -xf "./app-deploy.tar" -C "./app-deploy-tmp"
+      cp -r "$(find ./app-deploy-tmp -name "helmfile.yaml" | sed 's/helmfile.yaml/./g')" .
+      rm -rf "app-deploy-tmp"
+    fi
 
     # ensure dir(s)
     # rm -rf "${HELM_HOME}"

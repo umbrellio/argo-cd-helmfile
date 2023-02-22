@@ -167,6 +167,13 @@ case $phase in
   "init")
     echoerr "starting init"
 
+    projectDeployDirName=$ARGOCD_APP_NAME-deploy
+    curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN_HELM_CHARTS" "$PROJECT_DEPLOY_DIR_URL" --output "$projectDeployDirName.tar"
+    mkdir "$projectDeployDirName-tmp"
+    tar -xf "./$projectDeployDirName.tar" -C "./$projectDeployDirName-tmp"
+    cp -r "$projectDeployDirName-tmp/$(ls ./$projectDeployDirName | head -1)/projects/$ARGOCD_APP_NAME" "./$projectDeployDirName"
+    rm -rf "$projectDeployDirName-tmp"
+
     # ensure dir(s)
     # rm -rf "${HELM_HOME}"
     if [[ ! -d "${HELM_HOME}" ]]; then

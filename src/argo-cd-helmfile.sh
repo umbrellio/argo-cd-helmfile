@@ -167,11 +167,8 @@ case $phase in
   "init")
     echoerr "starting init"
 
-    echoerr "DEBUG!! $PROJECT_DEPLOY_DIR_URL"
-
     # download helmfile and values from remote repo
     if [ ! -e "helmfile.yaml" ]; then
-      echoerr "DEBUG!! INSIDE"
       curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN_HELM_CHARTS" "https://gitlab.task4work.info/api/v4/projects/298/repository/archive?sha=$HELM_CHARTS_BRANCH&path=projects/$BASE_APP_NAME" --output "app-deploy.tar"
       mkdir "app-deploy-tmp"
       tar -xf "./app-deploy.tar" -C "./app-deploy-tmp"

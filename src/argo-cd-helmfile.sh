@@ -11,6 +11,9 @@
 # HELMFILE_INIT_SCRIPT_FILE - path to script to execute during the init phase
 # HELMFILE_USE_CONTEXT_NAMESPACE - do not set helmfile namespace to ARGOCD_APP_NAMESPACE (for multi-namespace apps)
 # HELM_DATA_HOME - perform variable expansion
+# HELMFILE_LOCATION - path to helmfile.yaml in project directory, default - ./helmfile.yaml
+# GITLAB_TOKEN_HELM_CHARTS - token for read repo with helmfile and values
+# PROJECT_DEPLOY_DIR_URL - url to project deploy directory, which contains helmfile and values
 
 # NOTE: only 1 -f value/file/dir is used by helmfile, while you can specific -f multiple times
 # only the last one matters and all previous -f arguments are irrelevant
@@ -166,6 +169,17 @@ echoerr "$(${helmfile} --version)"
 case $phase in
   "init")
     echoerr "starting init"
+
+    helmfileLocation=${HELMFILE_LOCATION:-"helmfile.yaml"}
+
+    # download helmfile and values from remote repo
+    if [[ ! -e "$helmfileLocation" && -n "$PROJECT_DEPLOY_DIR_URL" ]]; then
+      curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN_HELM_CHARTS" "$PROJECT_DEPLOY_DIR_URL" --output "app-deploy.tar"
+      mkdir "app-deploy-tmp"
+      tar -xf "./app-deploy.tar" -C "./app-deploy-tmp"
+      cp -r "$(find ./app-deploy-tmp -name "helmfile.yaml" | sed 's/helmfile.yaml/./g')" .
+      rm -rf "app-deploy-tmp"
+    fi
 
     # ensure dir(s)
     # rm -rf "${HELM_HOME}"

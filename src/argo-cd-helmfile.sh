@@ -250,7 +250,7 @@ case $phase in
       helmfileLocation="helmfile.yaml"
     fi
 
-    helmfile="${helmfile} --file ${helmfileLocation}"
+    helmfile="${helmfile} --file ${helmfileLocation} "
 
     INTERNAL_HELMFILE_TEMPLATE_OPTIONS=
     INTERNAL_HELM_TEMPLATE_OPTIONS=

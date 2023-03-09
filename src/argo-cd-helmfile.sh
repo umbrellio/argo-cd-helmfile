@@ -247,6 +247,10 @@ case $phase in
   "generate")
     echoerr "starting generate"
 
+    if [[ ! -e "$helmfileLocation" && -n "$PROJECT_DEPLOY_DIR_URL" ]]; then
+      HELMFILE_LOCATION="helmfile.yaml"
+    fi
+
     helmfile="${helmfile} --file ${HELMFILE_LOCATION}"
 
     INTERNAL_HELMFILE_TEMPLATE_OPTIONS=

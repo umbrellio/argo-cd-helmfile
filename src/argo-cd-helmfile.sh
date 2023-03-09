@@ -179,7 +179,12 @@ case $phase in
       tar -xf "./app-deploy.tar" -C "./app-deploy-tmp"
       cp -r "$(find ./app-deploy-tmp -name "helmfile.yaml" | sed 's/helmfile.yaml/./g')" .
       rm -rf "app-deploy-tmp"
+
+      HELMFILE_LOCATION="helmfile.yaml"
+      helmfileLocation=${HELMFILE_LOCATION}
     fi
+
+    helmfile="${helmfile} --file ${helmfileLocation}"
 
     # ensure dir(s)
     # rm -rf "${HELM_HOME}"
@@ -241,6 +246,8 @@ case $phase in
 
   "generate")
     echoerr "starting generate"
+
+    helmfile="${helmfile} --file ${HELMFILE_LOCATION}"
 
     INTERNAL_HELMFILE_TEMPLATE_OPTIONS=
     INTERNAL_HELM_TEMPLATE_OPTIONS=

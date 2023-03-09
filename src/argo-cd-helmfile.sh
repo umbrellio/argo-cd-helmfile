@@ -166,11 +166,11 @@ export HOME="${HELM_HOME}"
 echoerr "$(${helm} version --short --client)"
 echoerr "$(${helmfile} --version)"
 
+helmfileLocation=${HELMFILE_LOCATION:-"helmfile.yaml"}
+
 case $phase in
   "init")
     echoerr "starting init"
-
-    helmfileLocation=${HELMFILE_LOCATION:-"helmfile.yaml"}
 
     # download helmfile and values from remote repo
     if [[ ! -e "$helmfileLocation" && -n "$PROJECT_DEPLOY_DIR_URL" ]]; then
@@ -180,8 +180,7 @@ case $phase in
       cp -r "$(find ./app-deploy-tmp -name "helmfile.yaml" | sed 's/helmfile.yaml/./g')" .
       rm -rf "app-deploy-tmp"
 
-      HELMFILE_LOCATION="helmfile.yaml"
-      helmfileLocation=${HELMFILE_LOCATION}
+      helmfileLocation="helmfile.yaml"
     fi
 
     helmfile="${helmfile} --file ${helmfileLocation}"
@@ -248,10 +247,10 @@ case $phase in
     echoerr "starting generate"
 
     if [[ ! -e "$helmfileLocation" && -n "$PROJECT_DEPLOY_DIR_URL" ]]; then
-      HELMFILE_LOCATION="helmfile.yaml"
+      helmfileLocation="helmfile.yaml"
     fi
 
-    helmfile="${helmfile} --file ${HELMFILE_LOCATION}"
+    helmfile="${helmfile} --file ${helmfileLocation}"
 
     INTERNAL_HELMFILE_TEMPLATE_OPTIONS=
     INTERNAL_HELM_TEMPLATE_OPTIONS=
